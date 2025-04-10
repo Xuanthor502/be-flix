@@ -1,0 +1,29 @@
+variables:
+  USER_PROJECT: 'therxun'
+  IMAGE_VERSION: '$CI_REGISTRY/${USER_PROJECT}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}-${CI_COMMIT_TAG}'
+
+stages:
+  - build
+  - push
+  - deploy
+
+build:
+  stage: build
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - whoami
+
+push:
+  stage: push
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - whoami
+
+deploy:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - whoami
