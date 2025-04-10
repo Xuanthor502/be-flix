@@ -13,6 +13,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { MoviesModule } from './movies/movies.module';
+import { FakeDataModule } from './helper/fake-data/fake-data.module';
 let envFilePath = '.env.development';
 if (process.env.NODE_ENV === 'production') envFilePath = '.env.production';
 
@@ -41,6 +43,8 @@ if (process.env.NODE_ENV === 'production') envFilePath = '.env.production';
     RolesModule,
     PermissionsModule,
     ImageStorageModule,
+    MoviesModule,
+    FakeDataModule,
   ],
   providers: [
     {

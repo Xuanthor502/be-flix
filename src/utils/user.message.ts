@@ -24,6 +24,15 @@ export namespace ResponseMessages {
     CREATE = 'New role created successfully.',
   }
 
+  export enum MovieMessages {
+    LIST = 'Retrieved movie list with pagination.',
+    FIND = 'Movie found by title.',
+    REMOVE = 'Movie successfully deleted.',
+    FIND_ID = 'Movie details fetched by ID.',
+    UPDATE = 'Movie information updated successfully.',
+    CREATE = 'New movie created successfully.',
+  }
+
   export enum EmailMessages {
     UPLOAD_EMAIL = 'Email uploaded successfully.',
   }

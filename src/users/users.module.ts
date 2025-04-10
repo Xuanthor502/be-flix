@@ -21,7 +21,7 @@ import { UsersService } from './services/users.service';
   ],
   exports: [
     {
-      provide: Services.USERS,
+      provide: Services.MOVIES,
       useClass: UsersService,
     },
   ],

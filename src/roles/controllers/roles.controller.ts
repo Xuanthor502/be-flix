@@ -64,7 +64,7 @@ export class RolesController {
   }
 
   @Delete(':id')
-  @ResponseMessage('Delete a role')
+  @ResponseMessage(ResponseMessages.RoleMessages.REMOVE)
   remove(@Param('id') id: string, @CurrentUser() currentUser: ICurrentUser) {
     return this.rolesService.removeRole(id, currentUser);
   }

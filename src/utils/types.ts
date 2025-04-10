@@ -24,6 +24,20 @@ export type FindUserParams = Partial<{
   name: string;
   refreshToken: string;
 }>;
+export type FindMovieParams = Partial<{
+  _id: string;
+  title: string;
+  desc: string;
+  img: string;
+  imgTitle: string;
+  imgSm: string;
+  trailer: string;
+  video: string;
+  year: string;
+  limit: string;
+  genrce: string;
+  isSeries: string;
+}>;
 
 export type FindPermissionParams = Partial<{
   _id: string;
