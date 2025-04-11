@@ -43,7 +43,9 @@ export class RolesService implements IRoleServices {
   }
 
   async checkNameRoleExits(name: string) {
-    const isExist = await this.findOneRole({ name: name });
+    const isExist = await this.roleModel.findOne({
+      name: name,
+    });
     if (isExist) {
       throw new RolesAlreadyExists(name);
     }

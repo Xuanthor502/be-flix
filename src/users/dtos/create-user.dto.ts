@@ -1,20 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsMongoId,
-  IsNotEmpty,
-  IsNotEmptyObject,
-  IsObject,
-  ValidateNested,
-} from 'class-validator';
-import mongoose from 'mongoose';
-
-class Company {
-  @IsNotEmpty()
-  _id: mongoose.Schema.Types.ObjectId;
-  @IsNotEmpty()
-  name: string;
-}
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'Name cannot be empty' })
@@ -35,14 +19,4 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: 'Address cannot be empty' })
   address: string;
-
-  @IsNotEmpty({ message: 'Role cannot be empty' })
-  @IsMongoId({ message: 'Role must be a valid Mongo ID' })
-  role: mongoose.Schema.Types.ObjectId;
-
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => Company)
-  company: Company;
 }

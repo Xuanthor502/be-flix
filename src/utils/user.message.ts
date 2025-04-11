@@ -46,6 +46,7 @@ export namespace ResponseMessages {
 
   export enum FileMessages {
     UPLOAD_SINGLE = 'Single file uploaded successfully.',
+    UPLOAD_MULTIPLE = 'Multiple files uploaded successfully.',
   }
 
   export enum AuthMessages {

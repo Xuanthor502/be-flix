@@ -1,6 +1,11 @@
 variables:
   USER_PROJECT: 'therxun'
-  IMAGE_VERSION: '$CI_REGISTRY/${USER_PROJECT}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}-${CI_COMMIT_TAG}'
+  CI_REGISTRY_USER: 'emlamixthor'
+  CI_REGISTRY_PASSWORD: 'Xuantho2003!'
+  BE_PORT: '3003:3003'
+  CI_REGISTRY: 'docker.io'
+  CI_PROJECT_NAME: 'zoom-code-be'
+  IMAGE_VERSION: '$CI_REGISTRY/${USER_PROJECT}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}${CI_COMMIT_TAG:+-${CI_COMMIT_TAG}}'
 
 stages:
   - build
@@ -12,18 +17,45 @@ build:
   variables:
     GIT_STRATEGY: clone
   script:
-    - whoami
+    - echo "$ENV_FILE" > .env
+    - docker build -t ${IMAGE_VERSION} .
+  tags:
+    - netflix-clone-runner-shell
+  only:
+    - tags
 
 push:
   stage: push
   variables:
     GIT_STRATEGY: none
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   script:
-    - whoami
+    - docker push ${IMAGE_VERSION}
+  after_script:
+    - docker logout "$CI_REGISTRY"
+  tags:
+    - netflix-clone-runner-shell
+  only:
+    - tags
 
 deploy:
   stage: deploy
   variables:
     GIT_STRATEGY: none
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   script:
-    - whoami
+    - docker pull ${IMAGE_VERSION}
+    - |
+      if [ "$(docker ps -aq -f name=${CI_PROJECT_NAME})" ]; then
+          docker stop ${CI_PROJECT_NAME}
+          docker rm -f ${CI_PROJECT_NAME}
+      fi
+    - docker run --name ${CI_PROJECT_NAME} -dp ${BE_PORT} ${IMAGE_VERSION}
+  after_script:
+    - docker logout "$CI_REGISTRY"
+  tags:
+    - netflix-clone-runner-shell
+  only:
+    - tags

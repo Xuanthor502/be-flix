@@ -11,6 +11,7 @@ import {
   SearchOptions,
   SearchParams,
   CreateResponse,
+  UpdateResponse,
 } from 'src/utils/types';
 import aqp from 'api-query-params';
 import { User, UserDocument } from 'src/utils/schemas/entities/user.entity';
@@ -30,7 +31,10 @@ export class UsersService implements IUserService {
   ) {}
 
   async checkEmailExist(params: any) {
-    const existsEmail = await this.userModel.findOne({ email: params.email });
+    const existsEmail = await this.userModel.findOne({
+      email: params.email,
+      isDeleted: false,
+    });
     if (existsEmail) throw new EmailAlreadyExists();
   }
 
@@ -41,9 +45,13 @@ export class UsersService implements IUserService {
     const { password, email } = userDetails;
     await this.checkEmailExist(email);
     const hashedPassword = await hashPassword(password);
+    const userRole = await this.roleService.findOneRole({
+      name: RolesUser.USER,
+    });
     const param = {
       ...userDetails,
       email,
+      role: userRole?._id,
       password: hashedPassword,
       createdBy: {
         _id: currentUser._id,
@@ -85,10 +93,23 @@ export class UsersService implements IUserService {
     params: FindUserParams,
     options?: FindUserOptions,
   ): Promise<any> {
-    const selects: (keyof User)[] = ['_id', 'email', 'name', 'role'];
+    const selects: (keyof User)[] = [
+      '_id',
+      'email',
+      'name',
+      'role',
+      'age',
+      'gender',
+      'address',
+      'isDeleted',
+    ];
     const selectsWithPassword: (keyof User)[] = [...selects, 'password'];
     const result = await this.userModel
       .findOne(params)
+      .populate({
+        path: 'role',
+        select: { _id: 1, name: 1 },
+      })
       .select(options?.selectAll ? selectsWithPassword : selects)
       .exec();
     if (!result) throw new UserNotFoundException();
@@ -128,13 +149,22 @@ export class UsersService implements IUserService {
   async findAndUpdateUser(
     params: FindUserParams,
     updateData: Partial<User>,
-  ): Promise<User> {
+  ): Promise<UpdateResponse> {
     const findUser = await this.userModel.findOne(params);
     if (!findUser) throw new UserNotFoundException();
-
+    if (updateData.email) {
+      const duplicateEmailUser = await this.userModel.findOne({
+        email: updateData.email,
+        _id: { $ne: findUser._id },
+      });
+      if (duplicateEmailUser) throw new EmailAlreadyExists();
+    }
     Object.assign(findUser, updateData);
-
-    return await findUser.save();
+    const result = await findUser.save();
+    return {
+      _id: result?._id as unknown as string,
+      updatedAt: result?.updatedAt as unknown as string,
+    };
   }
 
   async findAndRemoveUser(id: string, user: ICurrentUser) {

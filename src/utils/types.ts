@@ -7,11 +7,6 @@ export type CreateUserDetails = {
   age: number;
   gender: string;
   address: string;
-  role: mongoose.Schema.Types.ObjectId;
-  company: {
-    _id: mongoose.Schema.Types.ObjectId;
-    name: string;
-  };
 };
 
 export type UploadImageParams = {

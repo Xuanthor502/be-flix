@@ -34,7 +34,7 @@ export class MoviesService implements IMovieServices {
   }
 
   async checkTitleMovieExits(title: string) {
-    const isExist = await this.findOneMovie({ title: title });
+    const isExist = await this.movieModel.findOne({ title: title });
     if (isExist) {
       throw new MovieAlreadyExistsException();
     }
@@ -92,7 +92,14 @@ export class MoviesService implements IMovieServices {
     currentUser: ICurrentUser,
   ): Promise<UpdateResponse> {
     validateObjectId(id);
-    await this.findOneMovie({ _id: id });
+    const findOneList = await this.findOneMovie({ _id: id });
+    if (updateMovieDto.title) {
+      const duplicateTitleList = await this.movieModel.findOne({
+        title: updateMovieDto.title,
+        _id: { $ne: findOneList._id },
+      });
+      if (duplicateTitleList) throw new MovieAlreadyExistsException();
+    }
     await this.movieModel.updateOne(
       { _id: id },
       {

@@ -1,4 +1,3 @@
-
 import { RegisterUserDto } from 'src/auth/dtos/register-user.dto';
 import { User } from 'src/utils/schemas';
 import {
@@ -10,6 +9,7 @@ import {
   SearchOptions,
   SearchParams,
   CreateResponse,
+  UpdateResponse,
 } from 'src/utils/types';
 
 export interface IUserService {
@@ -23,11 +23,10 @@ export interface IUserService {
   findAndUpdateUser(
     params: FindUserParams,
     updateData: Partial<User>,
-  ): Promise<User>;
+  ): Promise<UpdateResponse>;
   findAndRemoveUser(id: string, user: ICurrentUser): Promise<any>;
   searchUsers(
     params?: SearchParams,
     options?: SearchOptions,
   ): Promise<Paginate<User[]>>;
 }
-

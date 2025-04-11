@@ -1,9 +1,9 @@
 import { HydratedDocument } from 'mongoose';
 import { AuditFields } from '../utils/audit.entity';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type MovieDocument = HydratedDocument<Movie>;
-
+@Schema({ timestamps: true })
 export class Movie extends AuditFields {
   @Prop({ required: true, unique: true })
   title: string;

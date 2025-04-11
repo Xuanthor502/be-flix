@@ -28,7 +28,7 @@ export class AuditFields {
   @Prop()
   updatedAt: Date;
 
-  @Prop()
+  @Prop({ default: false })
   isDeleted: boolean;
 
   @Prop()

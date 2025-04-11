@@ -19,7 +19,6 @@ import { IPermission } from '../interfaces/permissions.interfaces';
 import { PermissionAlreadyExists } from '../exceptions/permission-exists.exception';
 import { PermissionNotFoundException } from '../exceptions/permission-not-found.exception';
 
-
 @Injectable()
 export class PermissionsService implements IPermission {
   constructor(
@@ -28,7 +27,10 @@ export class PermissionsService implements IPermission {
   ) {}
 
   async checkPermissionExits(apiPath: string, method: string) {
-    const isExist = await this.permissionModel.findOne({ apiPath, method });
+    const isExist = await this.permissionModel.findOne({
+      apiPath,
+      method,
+    });
     if (isExist) {
       throw new PermissionAlreadyExists(apiPath, method);
     }

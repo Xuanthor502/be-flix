@@ -34,24 +34,26 @@ export class ListsService implements IListServices {
     return list;
   }
   async checkTitleListExits(title: string) {
-    const isExist = await this.findOneList({ title: title });
-    if (isExist) {
+    const exists = await this.listModel.exists({ title, isDeleted: false });
+    if (exists) {
       throw new ListAlreadyExistsException();
     }
   }
+
   async createList(
     createListData: CreateListDto,
     currentUser: ICurrentUser,
   ): Promise<CreateResponse> {
     const { title } = createListData;
     await this.checkTitleListExits(title);
-    const newList = await this.listModel.create({
+    const params = {
       ...createListData,
       createdBy: {
         _id: currentUser._id,
         email: currentUser.email,
       },
-    });
+    };
+    const newList = await this.listModel.create(params);
     return {
       _id: newList._id as unknown as string,
       createdAt: newList.createdAt as unknown as string,
@@ -92,8 +94,15 @@ export class ListsService implements IListServices {
     currentUser: ICurrentUser,
   ): Promise<UpdateResponse> {
     validateObjectId(id);
-    await this.findOneList({ _id: id });
-    const updatedList = await this.listModel.findByIdAndUpdate(
+    const findOneList = await this.findOneList({ _id: id });
+    if (updateListData.title) {
+      const duplicateTitleList = await this.listModel.findOne({
+        title: updateListData.title,
+        _id: { $ne: findOneList._id },
+      });
+      if (duplicateTitleList) throw new ListAlreadyExistsException();
+    }
+    await this.listModel.findByIdAndUpdate(
       id,
       {
         ...updateListData,

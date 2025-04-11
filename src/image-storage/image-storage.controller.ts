@@ -5,10 +5,11 @@ import {
   UseFilters,
   UploadedFile,
   Inject,
+  UploadedFiles,
 } from '@nestjs/common';
 import { Public } from 'src/utils/decorators/public.decorator';
 import { ResponseMessage } from 'src/utils/decorators/response_message.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from './exceptions/http-filter-file.exception';
 import { IImangeUpdaloadService } from './interfaces/image-storage-service.interface';
 import { Routes, Services } from 'src/utils/constants';
@@ -29,5 +30,14 @@ export class ImageStorageController {
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     const params = { file };
     return this.imageStorageService.uploadFile(params);
+  }
+
+  @Post('upload-multiple')
+  @Public()
+  @ResponseMessage(ResponseMessages.FileMessages.UPLOAD_MULTIPLE )
+  @UseInterceptors(FilesInterceptor('files'))
+  @UseFilters(new HttpExceptionFilter())
+  uploadMultipleFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    return this.imageStorageService.uploadMultipleFiles({ files });
   }
 }

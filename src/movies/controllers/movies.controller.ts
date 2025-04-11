@@ -17,6 +17,7 @@ import { ResponseMessage } from 'src/utils/decorators/response_message.decorator
 import { CurrentUser } from 'src/utils/decorators/current-user.decorator';
 import { ICurrentUser } from 'src/utils/types';
 import { UpdateMovieDto } from '../dtos/update-movie.dto';
+import { Public } from 'src/utils/decorators/public.decorator';
 
 @Controller(Routes.MOVIES)
 export class MoviesController {
@@ -34,6 +35,7 @@ export class MoviesController {
   }
 
   @Get()
+  @Public()
   @ResponseMessage(ResponseMessages.MovieMessages.LIST)
   findAll(
     @Query('current') skip: string,
@@ -48,6 +50,7 @@ export class MoviesController {
   }
 
   @Get(':id')
+  @Public()
   @ResponseMessage(ResponseMessages.MovieMessages.FIND_ID)
   findOne(@Param('id') id: string) {
     return this.moviesService.findOneMovie({ _id: id });

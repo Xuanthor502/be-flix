@@ -37,7 +37,7 @@ export class UsersController {
   searchUsers(
     @Query('current') skip: string,
     @Query('pageSize') limit: string,
-    @Query() query: string,
+    @Query() query: string, 
   ) {
     const params = {
       skip: isNaN(Number(skip)) ? 0 : Number(skip),

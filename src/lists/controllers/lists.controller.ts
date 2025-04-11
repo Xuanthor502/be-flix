@@ -17,6 +17,7 @@ import { CreateListDto } from '../dtos/create-list.dto';
 import { ICurrentUser } from 'src/utils/types';
 import { CurrentUser } from 'src/utils/decorators/current-user.decorator';
 import { UpdateListDto } from '../dtos/update-list.dto';
+import { Public } from 'src/utils/decorators/public.decorator';
 
 @Controller(Routes.LISTS)
 export class ListsController {
@@ -32,6 +33,7 @@ export class ListsController {
     return this.listsService.createList(createListDto, user);
   }
   @Get()
+  @Public()
   @ResponseMessage(ResponseMessages.ListMessages.LIST)
   findAll(
     @Query('current') skip: string,
@@ -45,6 +47,7 @@ export class ListsController {
     return this.listsService.searchLists(params, { query });
   }
   @Get(':id')
+  @Public()
   @ResponseMessage(ResponseMessages.ListMessages.FIND_ID)
   findOne(@Param('id') id: string) {
     return this.listsService.findOneList({ _id: id });
