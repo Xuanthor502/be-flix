@@ -18,13 +18,11 @@ import { ResponseMessages } from 'src/utils/user.message';
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { ICurrentUser } from 'src/utils/types';
 import { LocalAuthGuard } from '../utils/guards/local-auth.guard';
-
 @Controller(Routes.AUTHS)
 export class AuthsController {
   constructor(
     @Inject(Services.AUTHS) private readonly authsService: IAuthsService,
   ) {}
-
   @Post('login')
   @Public()
   @ResponseMessage(ResponseMessages.AuthMessages.LOGIN)

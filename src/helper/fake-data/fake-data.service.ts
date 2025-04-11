@@ -8,7 +8,7 @@ import { RoleDocument } from 'src/utils/schemas/entities/role.entity';
 import { UserDocument } from 'src/utils/schemas/entities/user.entity';
 import { hashPassword } from 'src/utils/helpers';
 import { RolesUser } from 'src/utils/constants';
-import { DATA_PERMISSIONS } from '../config/data';
+import { DATA_PERMISSIONS } from '../config/dataPermissions';
 
 @Injectable()
 export class FakeDataService {
