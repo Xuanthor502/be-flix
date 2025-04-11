@@ -4,7 +4,8 @@ export enum Services {
   PERMISSIONS = 'PERMISSION_SERVICE',
   ROLES = 'ROLES_SERVICE',
   IMAGE_UPLOAD = 'IMAGE_UPLOAD_SERVICE',
-  MOVIES = 'MOVIES_SERVICEssss',
+  MOVIES = 'MOVIES_SERVICE',
+  LISTS = 'LISTS_SERVICE',
 }
 
 export enum Routes {
@@ -14,6 +15,7 @@ export enum Routes {
   ROLES = 'roles',
   IMAGE_UPLOAD = 'files',
   MOVIES = 'movies',
+  LISTS = 'lists',
 }
 
 export enum RolesUser {

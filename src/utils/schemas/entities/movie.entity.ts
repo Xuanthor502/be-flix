@@ -5,7 +5,7 @@ import { Prop, SchemaFactory } from '@nestjs/mongoose';
 export type MovieDocument = HydratedDocument<Movie>;
 
 export class Movie extends AuditFields {
-  @Prop()
+  @Prop({ required: true, unique: true })
   title: string;
 
   @Prop()

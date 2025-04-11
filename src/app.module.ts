@@ -15,6 +15,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { MoviesModule } from './movies/movies.module';
 import { FakeDataModule } from './helper/fake-data/fake-data.module';
+import { ListsModule } from './lists/lists.module';
 let envFilePath = '.env.development';
 if (process.env.NODE_ENV === 'production') envFilePath = '.env.production';
 
@@ -45,6 +46,7 @@ if (process.env.NODE_ENV === 'production') envFilePath = '.env.production';
     ImageStorageModule,
     MoviesModule,
     FakeDataModule,
+    ListsModule,
   ],
   providers: [
     {

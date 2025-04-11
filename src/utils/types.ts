@@ -38,6 +38,13 @@ export type FindMovieParams = Partial<{
   genrce: string;
   isSeries: string;
 }>;
+export type FindListParams = Partial<{
+  _id: string;
+  title: string;
+  type: string;
+  genre: string;
+  content: string;
+}>;
 
 export type FindPermissionParams = Partial<{
   _id: string;

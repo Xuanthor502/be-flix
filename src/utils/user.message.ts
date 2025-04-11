@@ -32,7 +32,14 @@ export namespace ResponseMessages {
     UPDATE = 'Movie information updated successfully.',
     CREATE = 'New movie created successfully.',
   }
-
+  export enum ListMessages {
+    LIST = 'Retrieved list list with pagination.',
+    FIND = 'List found by title.',
+    REMOVE = 'List successfully deleted.',
+    FIND_ID = 'List details fetched by ID.',
+    UPDATE = 'List information updated successfully.',
+    CREATE = 'New list created successfully.',
+  }
   export enum EmailMessages {
     UPLOAD_EMAIL = 'Email uploaded successfully.',
   }
